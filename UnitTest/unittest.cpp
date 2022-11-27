@@ -16,6 +16,7 @@ TEST(ConnectionTest, AfterConnectingWithoutDebugStateIsConnected)
     // arrange & act
     Connect(false);
     bool isConnected{IsConnected()};
+    Disconnect();
 
     // assert
     ASSERT_TRUE(isConnected);
@@ -26,6 +27,7 @@ TEST(ConnectionTest, AfterConnectingWithDebugStateIsConnected)
     // arrange & act
     Connect(true);
     bool isConnected{IsConnected()};
+    Disconnect();
 
     // assert
     ASSERT_TRUE(isConnected);
@@ -49,6 +51,7 @@ TEST(ConnectionTest, AfterDisconnectingStateIsNotConnected)
 class LedStatusTests : public testing::Test{
 public:
     void SetUp() override;
+    void TearDown() override;
 };
 
 void LedStatusTests::SetUp() {
@@ -56,8 +59,12 @@ void LedStatusTests::SetUp() {
     Connect(true);
 }
 
-TEST_F(LedStatusTests, Test1) {
+void LedStatusTests::TearDown() {
+    Disconnect();
+}
 
+TEST_F(LedStatusTests, Test1) {
+    sleep(1);
 }
 
 
