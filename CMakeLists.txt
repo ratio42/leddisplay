@@ -19,7 +19,7 @@ endif()
 
 
 #define library that is being build: leddisplay (as a shared library)
-add_library(leddisplay SHARED library.cpp)
+add_library(leddisplay SHARED library.cpp library.h internal.h)
 
 #define executable that is being build: UnitTest
 add_executable(UnitTest UnitTest/unittest.cpp)
