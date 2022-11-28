@@ -129,6 +129,10 @@ public:
         }
     }
 
+    Led& GetLed(int x_p, int y_p) {
+        return m_Leds.at(y_p).at(x_p);
+    }
+
 private:
     // resolution
     int m_WidthInPixel;
