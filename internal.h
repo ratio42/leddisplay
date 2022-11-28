@@ -100,6 +100,7 @@ public:
     bool IsDebugOutputEnabled() {return m_DebugState == eOutputStatusOnStdOut;}
 
     void EnableGraphicalOutput() {m_GraphicalMode = eGraphicalOutput;}
+    bool IsGraphicalOutputEnabled() {return  m_GraphicalMode == eGraphicalOutput;}
 
 private:
 
