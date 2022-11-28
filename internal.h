@@ -52,7 +52,9 @@ public:
     Led() {};
 
     bool IsBlinking() const {return !m_BlinkingPeriodInMs.empty();}
-    LedColor GetColor(int timeStampInMs) const {
+    // returns if led is on (either permanently or blinking)
+    bool IsOn() const {return m_Color.IsOn();}
+    LedColor GetColor(long timeStampInMs) const {
         if (IsBlinking()) {
             for (auto period : m_BlinkingPeriodInMs) {
                 if ((timeStampInMs + period/2) % period < period/2) {
