@@ -28,7 +28,7 @@ SDL_Window *g_SdlWindow = nullptr; // pointer for the window
 
 // TODO: move SDL part (or probably all drawing) into separate file
 
-void InitGraphicalOutput() {
+void GraphicalOutput_Init() {
     SDL_Init(SDL_INIT_VIDEO);       // Initializing SDL as Video
     SDL_CreateWindowAndRenderer(c_WindowWidth, c_WindowHeight, 0, &g_SdlWindow, &g_SdlRenderer);
     SDL_SetRenderDrawColor(g_SdlRenderer, 0, 0, 0, 0);      // setting draw color
@@ -36,7 +36,7 @@ void InitGraphicalOutput() {
     SDL_RenderPresent(g_SdlRenderer);    // Reflects the changes done in the window.
 }
 
-void StopGraphicalOutput() {
+void GraphicalOutput_Stop() {
     SDL_DestroyRenderer(g_SdlRenderer);
     SDL_DestroyWindow(g_SdlWindow);
     SDL_Quit();
@@ -80,8 +80,10 @@ void Connect(bool enableDebugOutput, bool enableGraphicalOutput) {
     g_LibraryState.SetConnected(true);
     DebugWrite("Display connected!");
 
-    // initalize graphic output
-    InitGraphicalOutput();
+    if (g_LibraryState.IsGraphicalOutputEnabled()) {
+        // initialize graphic output
+        GraphicalOutput_Init();
+    }
 
     // start cyclic loop, for write access to display and refreshing graphical output
     g_CyclicLoop = std::make_unique<std::thread>(CyclicLoop);
@@ -107,7 +109,10 @@ void Disconnect() {
         g_StopDisplayLoop = true;
         g_CyclicLoop->join();
     }
-    StopGraphicalOutput();
+
+    if (g_LibraryState.IsGraphicalOutputEnabled()) {
+        GraphicalOutput_Stop();
+    }
 
     g_StopDisplayLoop = false;
     g_LibraryState.SetConnected(false);
