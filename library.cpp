@@ -187,3 +187,15 @@ void Disconnect() {
     g_StopDisplayLoop = false;
     g_LibraryState.SetConnected(false);
 }
+
+void LedOn(int x, int y, int r, int g, int b) {
+    std::stringstream outputStream;
+    outputStream << "Turn LED on: (" << x << "," << y << ") with color (" << r << "," << g << "," << b << ")";
+    DebugWrite(outputStream.str());
+
+    g_Display.GetLed(x, y).SetColor(LedColor(r, g, b));
+}
+
+bool LedIsOn(int x, int y) {
+    return g_Display.GetLed(x, y).IsOn();
+}
