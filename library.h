@@ -6,7 +6,7 @@
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 // Establish connection to display
-void Connect(bool enableDebugOutput = false);
+void Connect(bool enableDebugOutput = false, bool enableGraphicalOutput = false);
 void Disconnect();
 
 // returns true if connected

@@ -69,10 +69,13 @@ void CyclicLoop() {
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // implementation of API routines
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void Connect(bool enableDebugOutput) {
+void Connect(bool enableDebugOutput, bool enableGraphicalOutput) {
     if (enableDebugOutput)
     {
         g_LibraryState.EnableDebugOutput();
+    }
+    if (enableGraphicalOutput) {
+        g_LibraryState.EnableGraphicalOutput();
     }
     g_LibraryState.SetConnected(true);
     DebugWrite("Display connected!");
