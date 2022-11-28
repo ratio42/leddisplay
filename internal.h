@@ -28,7 +28,7 @@ public:
     int GetGreen() const {return m_Green;}
     int GetBlue() const {return m_Blue;}
 
-    bool IsOn() const {return m_Red != 0 && m_Green != 0 && m_Blue != 0;}
+    bool IsOn() const {return m_Red != 0 || m_Green != 0 || m_Blue != 0;}
     void TurnOff() {
         m_Red = 0;
         m_Green = 0;
