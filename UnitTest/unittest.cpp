@@ -141,6 +141,24 @@ TEST_F(LedStatusTests, TurnSingleLedInLrRedOn) {
     ASSERT_TRUE(ledIsOnAfterTurningOn);
 }
 
+TEST_F(LedStatusTests, TurnSingleLedOnAndOffAgain) {
+    // arrange
+    int x{0}, y{0}, r{100}, g{0}, b{0};
+
+    // act
+    const bool ledIsOnBeforeTurningOn{LedIsOn(x, y)};
+    LedOn(x, y, r, g, b);
+    const bool ledIsOnAfterTurningOn{LedIsOn(x, y)};
+    LedOff(x, y);
+    const bool ledIsOnAfterTurningOff{LedIsOn(x, y)};
+
+    // assert
+    ASSERT_FALSE(ledIsOnBeforeTurningOn);
+    ASSERT_TRUE(ledIsOnAfterTurningOn);
+    ASSERT_FALSE(ledIsOnAfterTurningOff);
+}
+
+
 TEST_F(LedStatusTests, TurnSingleLedOnAndSetBlinkingAt1Hz) {
     // arrange
     int x{31}, y{15}, r{200}, g{0}, b{0};

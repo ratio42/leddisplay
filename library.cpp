@@ -208,6 +208,14 @@ void LedOn(int x, int y, int r, int g, int b) {
     g_Display.GetLed(x, y).SetColor(LedColor(r, g, b));
 }
 
+void LedOff(int x, int y) {
+    std::stringstream outputStream;
+    outputStream << "Turn LED off: (" << x << "," << y << ").";
+    DebugWrite(outputStream.str());
+
+    g_Display.GetLed(x, y).TurnOff();
+}
+
 bool LedIsOn(int x, int y) {
     bool isOn{g_Display.GetLed(x, y).IsOn()};
     std::stringstream outputStream;
