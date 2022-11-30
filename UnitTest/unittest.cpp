@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-constexpr int c_SleepTimeAfterLedTestInSeconds = 2;
+constexpr int c_SleepTimeAfterLedTestInSeconds = 5;
 
 TEST(ConnectionTest, WithoutConnectingStateIsNotConnected)
 {
@@ -139,6 +139,26 @@ TEST_F(LedStatusTests, TurnSingleLedInLrRedOn) {
     // assert
     ASSERT_FALSE(ledIsOnBeforeTurningOn);
     ASSERT_TRUE(ledIsOnAfterTurningOn);
+}
+
+TEST_F(LedStatusTests, TurnSingleLedOnAndSetBlinkingAt1Hz) {
+    // arrange
+    int x{31}, y{15}, r{200}, g{0}, b{0};
+
+    // act
+    const bool ledIsOnBeforeTurningOn{LedIsOn(x, y)};
+    const bool ledIsNotBlinkingBeforeTurningOn{LedIsBlinking(x, y)};
+    LedOn(x, y, r, g, b);
+    LedAddBlinkingPeriodInMs(x, y, 1000);
+
+    const bool ledIsOnAfterTurningOn{LedIsOn(x, y)};
+    const bool ledIsBlinkingAfterTurningOn{LedIsBlinking(x, y)};
+
+    // assert
+    ASSERT_FALSE(ledIsOnBeforeTurningOn);
+    ASSERT_FALSE(ledIsNotBlinkingBeforeTurningOn);
+    ASSERT_TRUE(ledIsOnAfterTurningOn);
+    ASSERT_TRUE(ledIsBlinkingAfterTurningOn);
 }
 
 TEST_F(LedStatusTests, TurnEveryLedOnWithColorRamp) {

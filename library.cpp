@@ -201,3 +201,15 @@ bool LedIsOn(int x, int y) {
 void ClearAll() {
     g_Display.Clear();
 }
+
+void LedAddBlinkingPeriodInMs(int x, int y, int periodInMs) {
+    g_Display.GetLed(x, y).AddBlinkingPeriod(periodInMs);
+}
+
+bool LedIsBlinking(int x, int y) {
+    return g_Display.GetLed(x, y).IsBlinking();
+}
+
+void LedDisableBlinking(int x, int y) {
+    return g_Display.GetLed(x, y).DisableBlinking();
+}
