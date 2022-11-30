@@ -39,6 +39,9 @@ constexpr double c_LedWidth{c_WidthAvailableForLeds * 1.0 / c_NumberOfLedsX};
 constexpr int c_HeigthAvailableForLeds{c_FrameHeight - (c_NumberOfLedsY + 1) * c_LedOuterBorder};
 constexpr double c_LedHeight{c_HeigthAvailableForLeds * 1.0 / c_NumberOfLedsY};
 
+// time of start of library
+auto g_StartTimeOfLibrary = std::chrono::steady_clock::now();
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // graphical output and drawing routines
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -121,8 +124,9 @@ void CyclicLoop() {
     while(!g_StopDisplayLoop)
     {
         auto start = std::chrono::steady_clock::now();
-        auto duration = start.time_since_epoch();
-        auto timeStampInMs = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+        auto timeSinceStart = start - g_StartTimeOfLibrary;
+        // determine timestamp before loop, to have the same for each led - keep them in sync
+        auto timeStampInMs = std::chrono::duration_cast<std::chrono::milliseconds>(timeSinceStart).count();
 
         // get leds from display variable and update them if needed on real display
         for (int x = 0; x < c_NumberOfLedsX; x++) {
