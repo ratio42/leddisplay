@@ -204,21 +204,41 @@ void LedOn(int x, int y, int r, int g, int b) {
 }
 
 bool LedIsOn(int x, int y) {
-    return g_Display.GetLed(x, y).IsOn();
+    bool isOn{g_Display.GetLed(x, y).IsOn()};
+    std::stringstream outputStream;
+    outputStream << "On/Off state of LED: (" << x << "," << y << ") requested: " << isOn;
+    DebugWrite(outputStream.str());
+
+    return isOn;
 }
 
 void ClearAll() {
+    DebugWrite("Clearing complete display!");
+
     g_Display.Clear();
 }
 
 void LedAddBlinkingPeriodInMs(int x, int y, int periodInMs) {
+    std::stringstream outputStream;
+    outputStream << "Add blinking to LED: (" << x << "," << y << ") with period " << periodInMs << "ms.";
+    DebugWrite(outputStream.str());
+
     g_Display.GetLed(x, y).AddBlinkingPeriod(periodInMs);
 }
 
 bool LedIsBlinking(int x, int y) {
-    return g_Display.GetLed(x, y).IsBlinking();
+    bool isBlinking{g_Display.GetLed(x, y).IsBlinking()};
+    std::stringstream outputStream;
+    outputStream << "Blinking state of LED: (" << x << "," << y << ") requested: " << isBlinking;
+    DebugWrite(outputStream.str());
+
+    return isBlinking;
 }
 
 void LedDisableBlinking(int x, int y) {
+    std::stringstream outputStream;
+    outputStream << "Blinking of LED: (" << x << "," << y << ") disabled.";
+    DebugWrite(outputStream.str());
+
     return g_Display.GetLed(x, y).DisableBlinking();
 }
