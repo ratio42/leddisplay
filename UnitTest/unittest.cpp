@@ -179,6 +179,31 @@ TEST_F(LedStatusTests, TurnSingleLedOnAndSetBlinkingAt1Hz) {
     ASSERT_TRUE(ledIsBlinkingAfterTurningOn);
 }
 
+TEST_F(LedStatusTests, TurnSingleLedOnAndSetBlinkingAt1HzAndTurnItOffAgain) {
+    // arrange
+    int x{31}, y{15}, r{200}, g{0}, b{0};
+
+    // act
+    const bool ledIsOnBeforeTurningOn{LedIsOn(x, y)};
+    const bool ledIsNotBlinkingBeforeTurningOn{LedIsBlinking(x, y)};
+    LedOn(x, y, r, g, b);
+    LedAddBlinkingPeriodInMs(x, y, 1000);
+    const bool ledIsOnAfterTurningOn{LedIsOn(x, y)};
+    const bool ledIsBlinkingAfterTurningOn{LedIsBlinking(x, y)};
+    LedDisableBlinking(x, y);
+    const bool ledIsOnAfterDisableBlinking{LedIsOn(x, y)};
+    const bool ledIsBlinkingAfterDisableBlinking{LedIsBlinking(x, y)};
+
+    // assert
+    ASSERT_FALSE(ledIsOnBeforeTurningOn);
+    ASSERT_FALSE(ledIsNotBlinkingBeforeTurningOn);
+    ASSERT_TRUE(ledIsOnAfterTurningOn);
+    ASSERT_TRUE(ledIsBlinkingAfterTurningOn);
+    ASSERT_TRUE(ledIsOnAfterDisableBlinking);
+    ASSERT_FALSE(ledIsBlinkingAfterDisableBlinking);
+}
+
+
 TEST_F(LedStatusTests, TurnEveryLedOnWithColorRamp) {
     // arrange
     int rampMinRed{30}, rampMaxRed{250}, rampStepRed{10};
