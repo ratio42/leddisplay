@@ -57,11 +57,11 @@ public:
     LedColor GetColor(long timeStampInMs) const {
         if (IsBlinking()) {
             for (auto period : m_BlinkingPeriodInMs) {
-                if ((timeStampInMs + period/2) % period < period/2) {
+                if ((timeStampInMs + period) % (period*2) < period) {
                     return m_Color;
                 }
             }
-            return LedColor();
+            return LedColor(); // this is default black (= off)
         } else {
             return m_Color;
         }
@@ -71,6 +71,7 @@ public:
         m_Color = color_p;
     }
 
+    // a period is the time of led being on
     void AddBlinkingPeriod(int periodInMs_p) {
         m_BlinkingPeriodInMs.push_back(periodInMs_p);
     }
