@@ -228,6 +228,11 @@ void LedAddBlinkingPeriodInMs(int x, int y, int periodInMs) {
     outputStream << "Add blinking to LED: (" << x << "," << y << ") with period " << periodInMs << "ms.";
     DebugWrite(outputStream.str());
 
+    if (periodInMs <= 0) {
+        DebugWrite("Blinking period of 0 or below is being ignored! - LED will be on permanently.");
+        return;
+    }
+
     g_Display.GetLed(x, y).AddBlinkingPeriod(periodInMs);
 }
 
