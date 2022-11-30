@@ -76,6 +76,11 @@ public:
     }
 
     void DisableBlinking() {m_BlinkingPeriodInMs.clear();}
+    // turns led completely off (black and no blinking)
+    void TurnOff() {
+        DisableBlinking();
+        m_Color.TurnOff();
+    }
 
 private:
     LedColor m_Color;
@@ -122,9 +127,9 @@ public:
 
     // disables each led
     void Clear() {
-        for (RowOfLeds rowOfLeds : m_Leds) {
-            for (Led led : rowOfLeds) {
-                //ledColor.
+        for (RowOfLeds& rowOfLeds : m_Leds) {
+            for (Led& led : rowOfLeds) {
+                led.TurnOff();
             }
         }
     }

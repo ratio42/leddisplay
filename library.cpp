@@ -129,8 +129,6 @@ void CyclicLoop() {
         }
         GraphicalOutput_UpdateScreen();
 
-        DebugWrite("thread alive ...");
-
         auto timeToWaitUntil = start + timeWindow;
         std::this_thread::sleep_until(timeToWaitUntil);
     }
@@ -198,4 +196,8 @@ void LedOn(int x, int y, int r, int g, int b) {
 
 bool LedIsOn(int x, int y) {
     return g_Display.GetLed(x, y).IsOn();
+}
+
+void ClearAll() {
+    g_Display.Clear();
 }

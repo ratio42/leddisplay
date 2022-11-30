@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 
+constexpr int c_SleepTimeAfterLedTestInSeconds = 2;
+
 TEST(ConnectionTest, WithoutConnectingStateIsNotConnected)
 {
     // arrange & act
@@ -75,10 +77,11 @@ public:
 void LedStatusTests::SetUp() {
     // connect with debug output and graphical output
     Connect(true, true);
+    ClearAll();
 }
 
 void LedStatusTests::TearDown() {
-    // TODO: seams like leds keep turned on after disconnect --> at least connect should turn all of
+    sleep(c_SleepTimeAfterLedTestInSeconds);
     Disconnect();
 }
 
