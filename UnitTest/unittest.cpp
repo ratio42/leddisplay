@@ -189,6 +189,35 @@ TEST_F(LedStatusTests, TurnEveryLedOnWithColorRamp) {
     ASSERT_TRUE(ledIsOnAfterTurningOn);
 }
 
+TEST_F(LedStatusTests, SetEveryLedBlinkingWithColorRamp) {
+    // arrange
+    int rampMinRed{200}, rampMaxRed{50}, rampStepRed{-10};
+    int rampMinGreen{60}, rampMaxGreen{250}, rampStepGreen{5};
+    int rampMinBlue{50}, rampMaxBlue{250}, rampStepBlue{5};
+
+    // act
+    int red{rampMinRed};
+    int green{rampMinGreen};
+    int blue{rampMinBlue};
+    for (int x=0; x < 64; x++) {
+        for (int y=0; y < 32; y++) {
+            LedOn(x, y, red, green, blue);
+            LedAddBlinkingPeriodInMs(x, y, x*y % 1000);
+            red += rampStepRed;
+            green += rampStepGreen + x;
+            blue += rampStepBlue + 2*x;
+
+            if (red > rampMaxRed) { red = rampMinRed; }
+            if (green > rampMaxGreen) { green = rampMinGreen; }
+            if (blue > rampMaxBlue) { blue= rampMinBlue; }
+        }
+    }
+    const bool ledIsOnAfterTurningOn{LedIsOn(17, 5)};
+
+    // assert - just check on random led
+    ASSERT_TRUE(ledIsOnAfterTurningOn);
+}
+
 
 int main(int argc, char *argv[])
 {
