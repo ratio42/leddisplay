@@ -35,9 +35,9 @@ constexpr int c_FrameHeight{c_WindowHeight - 2 * c_WindowOuterBorder};
 
 // calculate size of leds
 constexpr int c_WidthAvailableForLeds{c_FrameWidth - (c_NumberOfLedsX + 1) * c_LedOuterBorder};
-constexpr int c_LedWidth{c_WidthAvailableForLeds / c_NumberOfLedsX};
+constexpr double c_LedWidth{c_WidthAvailableForLeds * 1.0 / c_NumberOfLedsX};
 constexpr int c_HeigthAvailableForLeds{c_FrameHeight - (c_NumberOfLedsY + 1) * c_LedOuterBorder};
-constexpr int c_LedHeight{c_HeigthAvailableForLeds / c_NumberOfLedsY};
+constexpr double c_LedHeight{c_HeigthAvailableForLeds * 1.0 / c_NumberOfLedsY};
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // graphical output and drawing routines
@@ -66,13 +66,13 @@ void GraphicalOutput_DrawFrame() {
     const int green{100};
     SDL_SetRenderDrawColor(g_SdlRenderer, red, green, blue, 255);
 
-    SDL_Rect frameRectangle;
+    SDL_FRect frameRectangle;
     frameRectangle.x = c_WindowOuterBorder;
     frameRectangle.y = c_WindowOuterBorder;
     frameRectangle.w = c_FrameWidth;
     frameRectangle.h = c_FrameHeight;
 
-    SDL_RenderDrawRect(g_SdlRenderer, &frameRectangle);
+    SDL_RenderDrawRectF(g_SdlRenderer, &frameRectangle);
 
     // Show the change on the screen
     SDL_RenderPresent(g_SdlRenderer);
@@ -83,13 +83,13 @@ void GraphicalOutput_DrawFrame() {
 void GraphicalMode_DrawLed(int x, int y, int red_p, int green_p, int blue_p) {
     SDL_SetRenderDrawColor(g_SdlRenderer, red_p, green_p, blue_p, 255);
 
-    SDL_Rect ledRectangle;
+    SDL_FRect ledRectangle;
     ledRectangle.x = c_WindowOuterBorder + c_LedOuterBorder + (x * (c_LedWidth + c_LedOuterBorder));
     ledRectangle.y = c_WindowOuterBorder + c_LedOuterBorder + (y * (c_LedHeight + c_LedOuterBorder));
     ledRectangle.w = c_LedWidth;
     ledRectangle.h = c_LedHeight;
 
-    SDL_RenderFillRect(g_SdlRenderer, &ledRectangle);
+    SDL_RenderFillRectF(g_SdlRenderer, &ledRectangle);
 }
 
 void GraphicalOutput_UpdateScreen() {
