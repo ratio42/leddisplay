@@ -71,8 +71,8 @@ public:
         m_Color = color_p;
     }
 
-    void AddBlinkingPeriod(int frequency_p) {
-        m_BlinkingPeriodInMs.push_back(frequency_p);
+    void AddBlinkingPeriod(int periodInMs_p) {
+        m_BlinkingPeriodInMs.push_back(periodInMs_p);
     }
 
     void DisableBlinking() {m_BlinkingPeriodInMs.clear();}
@@ -108,7 +108,6 @@ public:
     bool IsGraphicalOutputEnabled() {return  m_GraphicalMode == eGraphicalOutput;}
 
 private:
-
     ConnectionState m_ConnectionState = eNotConnected;
     DebugState m_DebugState = eNoDebug;
     GraphicalMode m_GraphicalMode = eNoGraphicalOutput;
