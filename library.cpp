@@ -106,6 +106,10 @@ static void DebugWrite(const std::string& debugText_p)
     }
 }
 
+static void HardawareAccess_SetLed(int /*x_p*/, int /*y_p*/, int /*red_p*/, int /*green_p*/, int /*blue_p*/) {
+    // just a dummy method now for later implementation
+}
+
 void CyclicLoop() {
     const auto timeWindow = std::chrono::milliseconds(c_LoopCycleInMs);
 
@@ -124,7 +128,12 @@ void CyclicLoop() {
             for (int y = 0; y < c_NumberOfLedsY; y++) {
                 const LedColor currentLedColor = g_Display.GetLed(x, y).GetColor(timeStampInMs);
 
-                GraphicalMode_DrawLed(x, y, currentLedColor.GetRed(), currentLedColor.GetGreen(), currentLedColor.GetBlue());
+                const int red{currentLedColor.GetRed()};
+                const int green{currentLedColor.GetGreen()};
+                const int blue{currentLedColor.GetBlue()};
+                GraphicalMode_DrawLed(x, y, red, green, blue);
+                // here the hw access must be done
+                HardawareAccess_SetLed(x, y, red, green, blue);
             }
         }
         GraphicalOutput_UpdateScreen();
