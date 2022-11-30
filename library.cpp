@@ -25,8 +25,8 @@ SDL_Renderer *g_SdlRenderer = nullptr; // pointer for the renderer
 SDL_Window *g_SdlWindow = nullptr; // pointer for the window
 
 // some constants for drawing
-constexpr int c_WindowWidth = 800;
-constexpr int c_WindowHeight = 400;
+constexpr int c_WindowWidth = 600; //800;
+constexpr int c_WindowHeight = 300; // 400;
 constexpr int c_WindowOuterBorder = 2;
 constexpr int c_LedOuterBorder = 2;
 
