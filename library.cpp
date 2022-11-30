@@ -48,6 +48,7 @@ constexpr double c_LedHeight{c_HeigthAvailableForLeds * 1.0 / c_NumberOfLedsY};
 void GraphicalOutput_Init() {
     SDL_Init(SDL_INIT_VIDEO);       // Initializing SDL as Video
     SDL_CreateWindowAndRenderer(c_WindowWidth, c_WindowHeight, 0, &g_SdlWindow, &g_SdlRenderer);
+    SDL_SetWindowTitle(g_SdlWindow, "LED Matrix library - Graphical output");
     SDL_SetRenderDrawColor(g_SdlRenderer, 0, 0, 0, 0);      // setting draw color
     SDL_RenderClear(g_SdlRenderer);      // Clear the newly created window
     SDL_RenderPresent(g_SdlRenderer);    // Reflects the changes done in the window.
