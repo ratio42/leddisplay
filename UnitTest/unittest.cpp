@@ -179,7 +179,7 @@ TEST_F(LedStatusTests, TurnSingleLedOnAndSetBlinkingAt1Hz) {
     ASSERT_TRUE(ledIsBlinkingAfterTurningOn);
 }
 
-TEST_F(LedStatusTests, TurnSingleLedOnAndSetBlinkingAt1HzAndTurnItOffAgain) {
+TEST_F(LedStatusTests, TurnSingleLedOnAndSetBlinkingAt1HzAndTurnBlinkingOffAgain) {
     // arrange
     int x{31}, y{15}, r{200}, g{0}, b{0};
 
