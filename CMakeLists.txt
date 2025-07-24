@@ -19,7 +19,7 @@ endif()
 
 #get SDL2
 find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
+#include_directories(${SDL2_INCLUDE_DIRS})
 
 #define library that is being build: leddisplay (as a shared library)
 add_library(leddisplay SHARED library.cpp library.h internal.h)
@@ -27,6 +27,6 @@ add_library(leddisplay SHARED library.cpp library.h internal.h)
 target_link_libraries(leddisplay ${SDL2_LIBRARIES})
 
 #define executable that is being build: UnitTest
-add_executable(UnitTest UnitTest/unittest.cpp)
+add_executable(UnitTestProj UnitTest/unittest.cpp)
 #link leddisplay against the executable
-target_link_libraries(UnitTest leddisplay gtest_main) # and gmock_main
+target_link_libraries(UnitTestProj leddisplay gtest_main) # and gmock_main

@@ -25,8 +25,8 @@ SDL_Renderer *g_SdlRenderer = nullptr; // pointer for the renderer
 SDL_Window *g_SdlWindow = nullptr; // pointer for the window
 
 // some constants for drawing
-constexpr int c_WindowWidth = 600; //800;
-constexpr int c_WindowHeight = 300; // 400;
+constexpr int c_WindowWidth = 800;
+constexpr int c_WindowHeight = 400;
 constexpr int c_WindowOuterBorder = 2;
 constexpr int c_LedOuterBorder = 2;
 
@@ -43,6 +43,16 @@ constexpr double c_LedHeight{c_HeigthAvailableForLeds * 1.0 / c_NumberOfLedsY};
 auto g_StartTimeOfLibrary = std::chrono::steady_clock::now();
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// (static) helper routines
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+static void DebugWrite(const std::string& debugText_p)
+{
+    if (g_LibraryState.IsDebugOutputEnabled()) {
+        std::cout << "LEDDISPLAY LIBRARY DEBUG: " << debugText_p << std::endl;
+    }
+}
+
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // graphical output and drawing routines
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -50,10 +60,25 @@ auto g_StartTimeOfLibrary = std::chrono::steady_clock::now();
 
 void GraphicalOutput_Init() {
     SDL_Init(SDL_INIT_VIDEO);       // Initializing SDL as Video
-    SDL_CreateWindowAndRenderer(c_WindowWidth, c_WindowHeight, 0, &g_SdlWindow, &g_SdlRenderer);
-    SDL_SetWindowTitle(g_SdlWindow, "LED Matrix library - Graphical output");
-    SDL_SetRenderDrawColor(g_SdlRenderer, 0, 0, 0, 0);      // setting draw color
+
+    // Disable compositor bypass
+    if(!SDL_SetHint(SDL_HINT_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR, "0"))
+    {
+        std::cout << "SDL can not disable compositor bypass!" << std::endl;
+        return;
+    }
+
+    // Create window
+    g_SdlWindow = SDL_CreateWindow("LED Matrix library - Graphical output",
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          SDL_WINDOWPOS_UNDEFINED,
+                                          c_WindowWidth, c_WindowHeight,
+                                          SDL_WINDOW_SHOWN);
+    g_SdlRenderer = SDL_CreateRenderer(g_SdlWindow, -1, SDL_RENDERER_ACCELERATED);
+
+    SDL_SetRenderDrawColor(g_SdlRenderer, 0x00, 0x00, 0x00, 0xFF);      // setting draw color
     SDL_RenderClear(g_SdlRenderer);      // Clear the newly created window
+
     SDL_RenderPresent(g_SdlRenderer);    // Reflects the changes done in the window.
 }
 
@@ -77,9 +102,6 @@ void GraphicalOutput_DrawFrame() {
     frameRectangle.h = c_FrameHeight;
 
     SDL_RenderDrawRectF(g_SdlRenderer, &frameRectangle);
-
-    // Show the change on the screen
-    SDL_RenderPresent(g_SdlRenderer);
 }
 
 // draws a led, whereas x and y position is regarding matrix: 0,0 is upper left
@@ -100,26 +122,20 @@ void GraphicalOutput_UpdateScreen() {
     SDL_RenderPresent(g_SdlRenderer);
 }
 
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// (static) helper routines
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-static void DebugWrite(const std::string& debugText_p)
-{
-    if (g_LibraryState.IsDebugOutputEnabled()) {
-        std::cout << "LEDDISPLAY LIBRARY DEBUG: " << debugText_p << std::endl;
-    }
-}
+
 
 static void HardawareAccess_SetLed(int /*x_p*/, int /*y_p*/, int /*red_p*/, int /*green_p*/, int /*blue_p*/) {
     // just a dummy method now for later implementation
 }
 
 void CyclicLoop() {
-    const auto timeWindow = std::chrono::milliseconds(c_LoopCycleInMs);
-
     if (g_LibraryState.IsGraphicalOutputEnabled()) {
-        GraphicalOutput_DrawFrame();
+        // initialize graphic output
+        GraphicalOutput_Init();
+        //GraphicalOutput_DrawFrame();
     }
+
+    const auto timeWindow = std::chrono::milliseconds(c_LoopCycleInMs);
 
     while(!g_StopDisplayLoop)
     {
@@ -141,6 +157,7 @@ void CyclicLoop() {
                 HardawareAccess_SetLed(x, y, red, green, blue);
             }
         }
+
         GraphicalOutput_UpdateScreen();
 
         auto timeToWaitUntil = start + timeWindow;
@@ -161,11 +178,6 @@ void Connect(bool enableDebugOutput, bool enableGraphicalOutput) {
     }
     g_LibraryState.SetConnected(true);
     DebugWrite("Display connected!");
-
-    if (g_LibraryState.IsGraphicalOutputEnabled()) {
-        // initialize graphic output
-        GraphicalOutput_Init();
-    }
 
     // start cyclic loop, for write access to display and refreshing graphical output
     g_CyclicLoop = std::make_unique<std::thread>(CyclicLoop);
